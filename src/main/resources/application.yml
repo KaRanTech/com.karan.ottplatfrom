@@ -1,6 +1,8 @@
 spring:
   data:
     mongodb:
-      uri:  mongodb+srv://karnaeze:FKGvCS3qzpDYI11P@karan.xheg5w8.mongodb.net/
+      uri:  mongodb+srv://karnaeze:Paddu24408@karan.xheg5w8.mongodb.net/
       database: karanDB_OTT
 
+server:
+  port: 9090

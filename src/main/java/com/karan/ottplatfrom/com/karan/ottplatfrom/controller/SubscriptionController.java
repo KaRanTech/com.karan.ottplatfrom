@@ -16,7 +16,13 @@ public class SubscriptionController {
 
     @PostMapping("/subscribe")
     public ResponseEntity
-                 subscribe(@RequestBody SubscriptionModel model) throws JsonProcessingException {
+    subscribe(@RequestBody SubscriptionModel model) throws JsonProcessingException {
         return service.subscribe(model);
+    }
+
+    @PatchMapping("/updateSubscribe")
+    public  ResponseEntity update(@RequestBody SubscriptionModel model){
+        return service.updateSub(model);
+
     }
 }
