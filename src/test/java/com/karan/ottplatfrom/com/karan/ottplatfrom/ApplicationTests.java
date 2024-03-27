@@ -8,8 +8,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScans;
 
+@EnableAutoConfiguration
+//@ComponentScans(basePackages={"com.karan.ottplatfrom.com.karan.*"})
 @SpringBootTest
 class ApplicationTests {
 

@@ -2,12 +2,19 @@ package com.karan.ottplatfrom.com.karan.ottplatfrom.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.karan.ottplatfrom.com.karan.ottplatfrom.model.RegistoreModel.RegistoreModel;
+import com.karan.ottplatfrom.com.karan.ottplatfrom.model.RegistoreModel.subscription.SubscriptionModel;
 import com.karan.ottplatfrom.com.karan.ottplatfrom.repository.RegisterFormInterface;
+import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SpringBootTest

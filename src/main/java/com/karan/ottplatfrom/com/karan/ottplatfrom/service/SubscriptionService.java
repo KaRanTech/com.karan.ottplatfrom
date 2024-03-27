@@ -68,7 +68,6 @@ public class SubscriptionService {
     public List<SubscriptionModel> getUserInfo(String userName){
         List<SubscriptionModel> subS = subscriptionInterface.findByUserName(userName);
         return subS;
-
     }
     public ResponseEntity updateSub(SubscriptionModel model){
         List<SubscriptionModel> subS = getUserInfo(model.getUserName());
