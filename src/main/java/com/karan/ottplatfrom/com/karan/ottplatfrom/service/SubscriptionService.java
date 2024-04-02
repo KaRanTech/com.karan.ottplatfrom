@@ -25,7 +25,7 @@ public class SubscriptionService {
     private RegisterFormInterface registerFormInterface;
 
     public ResponseEntity subscribe(SubscriptionModel model) throws JsonProcessingException {
-        //if(perkValidation(model.getPerk())) {
+       //if(perkValidation(model.getPerk())) {
         RegistoreModel regModel = new RegistoreModel();
         Optional<RegistoreModel> registoreModel = registerFormInterface.findByUserName(model.getUserName());
         if(registoreModel.isPresent()){
@@ -33,42 +33,44 @@ public class SubscriptionService {
             model.setUserDetails(regModel);
         }
         List<String> statusCode = Arrays.asList("ACTIVE","INACTIVE", "RENEWAL", "");
-        List<SubscriptionModel> subS = getUserInfo(model.getUserName());
-        System.out.println("User Details:"+new ObjectMapper().writeValueAsString(subS.toString()));
-        if(!subS.isEmpty()) {
-            for (SubscriptionModel subscription : subS) {
-                if (statusCode.contains(subscription.getStatus()) && !model.getPerk().getName().equalsIgnoreCase(subscription.getPerk().getName())) {
-                    model.setSubId(UUID.randomUUID().toString());
-                    model.getUserDetails().setId(UUID.randomUUID());
-                    subscriptionInterface.save(model);
-                    return ResponseEntity.status(HttpStatus.OK).body(model);
-                } else {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("That Perk already Subscribed.....!");
-                }
-            }
-        }
-        else if(statusCode.contains(model.getStatus())){
-            model.setSubId(UUID.randomUUID().toString());
-            model.getUserDetails().setId(UUID.randomUUID());
-            subscriptionInterface.save(model);
-            return ResponseEntity.status(HttpStatus.OK).body(model);
-        }
+            List<SubscriptionModel> subS =getUserInfo(model.getUserName());
+            System.out.println("User Details:"+new ObjectMapper().writeValueAsString(subS.toString()));
+           if(!subS.isEmpty()) {
+                   SubscriptionModel subModel = subS.stream().filter
+                           (sub -> !sub.getPerk().getName().equalsIgnoreCase(model.getPerk().getName())).findAny().orElse(new SubscriptionModel());
+                   if (subModel!= null && statusCode.contains(subModel.getStatus())) {
+                       model.setSubId(UUID.randomUUID().toString());
+                       model.getUserDetails().setId(UUID.randomUUID());
+                       subscriptionInterface.save(model);
+                       return ResponseEntity.status(HttpStatus.OK).body(model);
+                   } else {
+                       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("That Perk already Subscribed.....!");
+                   }
+           }
+           else if(statusCode.contains(model.getStatus())){
+               model.setSubId(UUID.randomUUID().toString());
+               model.getUserDetails().setId(UUID.randomUUID());
+               subscriptionInterface.save(model);
+               return ResponseEntity.status(HttpStatus.OK).body(model);
+           }
         //}
         ErrorMessage errorMessage = new ErrorMessage("In valid Perk");
-        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Perk Validation is Fails...!");
+     return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Perk Validation is Fails...!");
     }
 
     private boolean perkValidation(Subscription perk){
         List<Subscription> list = new ArrayList<Subscription>(EnumSet.allOf(Subscription.class));
         if(list.contains(perk.getName())){
-            return  true;
+        return  true;
         }
         return false;
     }
+
     public List<SubscriptionModel> getUserInfo(String userName){
         List<SubscriptionModel> subS = subscriptionInterface.findByUserName(userName);
         return subS;
     }
+
     public ResponseEntity updateSub(SubscriptionModel model){
         List<SubscriptionModel> subS = getUserInfo(model.getUserName());
         if(!subS.isEmpty()){
